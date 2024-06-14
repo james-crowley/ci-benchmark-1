@@ -1,0 +1,42 @@
+stages:
+  - build
+
+# test-demo:
+#   stage: test
+#   image: python:3.9-browsers  # Docker image to use for the job
+#   before_script:
+#     # Install browser tools (Chrome and ChromeDriver)
+#     - apt-get update -qy
+#     - apt-get install -y wget unzip
+#     - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+#     - echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
+#     - apt-get update -qy
+#     - apt-get install -y google-chrome-stable
+#     - wget -q https://chromedriver.storage.googleapis.com/126.0.6478.6/chromedriver_linux64.zip
+#     - unzip chromedriver_linux64.zip
+#     - mv chromedriver /usr/local/bin
+#     - chmod +x /usr/local/bin/chromedriver
+#   script:
+#     - pip install -r ./demo/requirements/testing.txt
+#     - mkdir test-results
+#     - pytest --headless --disable-gpu --no-sandbox --verbose --junitxml=test-results/junit.xml
+#   artifacts:
+#     paths:
+#       - test-results/junit.xml
+#   tags:
+#     - docker
+
+build-image:
+  stage: build
+  script:
+    - docker build -f Dockerfile -t demo:test .
+  tags:
+    - saas-linux-medium-amd64
+
+workflow:
+  name: ci-benchmark-1
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: always
+    - if: '$CI_COMMIT_BRANCH != "main"'
+      when: never
