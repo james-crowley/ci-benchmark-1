@@ -24,6 +24,10 @@ jobs:
       - run:
           name: Run PyTest Test Suite
           command: pytest --live-server-port 8080 --verbose --junitxml=test-results/junit.xml
+    environment:
+      ORB_PARAM_CHANNEL: stable
+      ORB_PARAM_CHROME_VERSION: latest
+      BROWSER_TOOLS_ORB_VERSION: v1.4.8
 
   build-image:
     machine:
