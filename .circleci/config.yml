@@ -9,6 +9,7 @@ jobs:
       - run:
           name: Install Browser and Driver
           command: |
+            sudo apt-get install -y jq
             git clone \
               --branch v1.4.8 \
               --depth 1 https://github.com/CircleCI-Public/browser-tools-orb.git \
