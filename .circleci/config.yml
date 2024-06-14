@@ -47,7 +47,6 @@ workflows:
     jobs:
       # - test-demo:
       #     name: "Testing Python Code"
-      - build-image:
-          name: "Building Container Image"
+      - build-image
           # requires:
           #   - "Testing Python Code"
