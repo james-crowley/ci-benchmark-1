@@ -10,6 +10,7 @@ jobs:
       ORB_PARAM_CHANNEL: stable
       ORB_PARAM_CHROME_VERSION: latest
       BROWSER_TOOLS_ORB_VERSION: v1.4.8
+      ORB_PARAM_DRIVER_INSTALL_DIR: /usr/local/bin
     container:
       image: python:3.9
     steps:
