@@ -1,0 +1,42 @@
+name: ci-benchmark-1
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-demo:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.9
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Browser and Driver
+        run: |
+          git clone --branch v1.4.8 --depth 1 https://github.com/CircleCI-Public/browser-tools-orb.git /tmp/browser-tools-orb
+          bash /tmp/browser-tools-orb/src/scripts/install-chrome.sh
+          bash /tmp/browser-tools-orb/src/scripts/install-chromedriver.sh
+
+      - name: Install Testing Requirements
+        run: |
+          pip install -r ./demo/requirements/testing.txt
+
+      - name: Make Directory for Test Results
+        run: |
+          mkdir test-results
+
+      - name: Run PyTest Test Suite
+        run: |
+          pytest --live-server-port 8080 --verbose --junitxml=test-results/junit.xml
+
+  build-image:
+    runs-on: ubuntu-latest
+    needs: test-demo
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker Image
+        run: |
+          docker build -f Dockerfile -t demo:test .

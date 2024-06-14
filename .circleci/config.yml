@@ -1,0 +1,47 @@
+version: 2.1
+
+jobs:
+  test-demo:
+    docker:
+      - image: python:3.9
+    steps:
+      - checkout
+      - run:
+          name: Install Browser and Driver
+          command: |
+            git clone \
+              --branch v1.4.8 \
+              --depth 1 https://github.com/CircleCI-Public/browser-tools-orb.git \
+              /tmp/browser-tools-orb
+            bash /tmp/browser-tools-orb/src/scripts/install-chrome.sh
+            bash /tmp/browser-tools-orb/src/scripts/install-chromedriver.sh
+      - run:
+          name: Pip Install Testing Requirements
+          command: pip install -r ./demo/requirements/testing.txt
+      - run:
+          name: Make Directory for Test Results
+          command: mkdir test-results
+      - run:
+          name: Run PyTest Test Suite
+          command: pytest --live-server-port 8080 --verbose --junitxml=test-results/junit.xml
+
+  build-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large
+    steps:
+      - checkout
+      - run:
+          name: Build Docker Image
+          command: docker build -f Dockerfile -t demo:test .
+
+
+workflows:
+  ci-benchmark-1:
+    jobs:
+      - test-demo:
+          name: "Testing Python Code"
+      - build-image:
+          name: "Building Container Image"
+          requires:
+            - "Testing Python Code"
