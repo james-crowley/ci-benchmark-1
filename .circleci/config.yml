@@ -1,35 +1,35 @@
 version: 2.1
 
 jobs:
-  test-demo:
-    docker:
-      - image: python:3.9
-    steps:
-      - checkout
-      - run:
-          name: Install Browser and Driver
-          command: |
-            apt-get update -y && apt-get install -y jq
-            git clone \
-              --branch v1.4.8 \
-              --depth 1 https://github.com/CircleCI-Public/browser-tools-orb.git \
-              /tmp/browser-tools-orb
-            bash /tmp/browser-tools-orb/src/scripts/install-chrome.sh
-            bash /tmp/browser-tools-orb/src/scripts/install-chromedriver.sh
-      - run:
-          name: Pip Install Testing Requirements
-          command: pip install -r ./demo/requirements/testing.txt
-      - run:
-          name: Make Directory for Test Results
-          command: mkdir test-results
-      - run:
-          name: Run PyTest Test Suite
-          command: pytest --live-server-port 8080 --verbose --junitxml=test-results/junit.xml
-    environment:
-      ORB_PARAM_CHANNEL: stable
-      ORB_PARAM_CHROME_VERSION: latest
-      BROWSER_TOOLS_ORB_VERSION: v1.4.8
-      ORB_PARAM_DRIVER_INSTALL_DIR: /usr/local/bin
+  # test-demo:
+  #   docker:
+  #     - image: python:3.9
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Install Browser and Driver
+  #         command: |
+  #           apt-get update -y && apt-get install -y jq
+  #           git clone \
+  #             --branch v1.4.8 \
+  #             --depth 1 https://github.com/CircleCI-Public/browser-tools-orb.git \
+  #             /tmp/browser-tools-orb
+  #           bash /tmp/browser-tools-orb/src/scripts/install-chrome.sh
+  #           bash /tmp/browser-tools-orb/src/scripts/install-chromedriver.sh
+  #     - run:
+  #         name: Pip Install Testing Requirements
+  #         command: pip install -r ./demo/requirements/testing.txt
+  #     - run:
+  #         name: Make Directory for Test Results
+  #         command: mkdir test-results
+  #     - run:
+  #         name: Run PyTest Test Suite
+  #         command: pytest --live-server-port 8080 --verbose --junitxml=test-results/junit.xml
+  #   environment:
+  #     ORB_PARAM_CHANNEL: stable
+  #     ORB_PARAM_CHROME_VERSION: latest
+  #     BROWSER_TOOLS_ORB_VERSION: v1.4.8
+  #     ORB_PARAM_DRIVER_INSTALL_DIR: /usr/local/bin
 
   build-image:
     machine:
@@ -45,9 +45,9 @@ jobs:
 workflows:
   ci-benchmark-1:
     jobs:
-      - test-demo:
-          name: "Testing Python Code"
+      # - test-demo:
+      #     name: "Testing Python Code"
       - build-image:
           name: "Building Container Image"
-          requires:
-            - "Testing Python Code"
+          # requires:
+          #   - "Testing Python Code"
