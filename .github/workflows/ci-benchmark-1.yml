@@ -37,7 +37,7 @@ jobs:
   #         pytest --live-server-port 8080 --verbose --junitxml=test-results/junit.xml
 
   build-image:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # needs: test-demo
     steps:
       - name: Checkout Repository
