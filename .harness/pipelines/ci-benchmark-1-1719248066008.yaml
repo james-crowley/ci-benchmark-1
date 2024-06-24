@@ -10,28 +10,73 @@ pipeline:
         connectorRef: account.Github_OAuth_1719248019120
         repoName: james-crowley/ci-benchmark-1
   stages:
+    - parallel:
+        - stage:
+            identifier: build
+            name: build
+            spec:
+              caching:
+                enabled: true
+              cloneCodebase: true
+              execution:
+                steps:
+                  - step:
+                      type: Run
+                      name: build_image
+                      identifier: build_image
+                      spec:
+                        shell: Sh
+                        command: docker build -f Dockerfile -t demo:test .
+                      description: Builds Docker Image
+              platform:
+                os: Linux
+                arch: Amd64
+              runtime:
+                type: Cloud
+                spec: {}
+            type: CI
+            description: ""
+        - stage:
+            name: testing
+            identifier: testing
+            description: ""
+            type: CI
+            spec:
+              cloneCodebase: true
+              platform:
+                os: Linux
+                arch: Amd64
+              runtime:
+                type: Cloud
+                spec: {}
+              execution:
+                steps:
+                  - step:
+                      type: Run
+                      name: Run_1
+                      identifier: Run_1
+                      spec:
+                        shell: Sh
+                        command: echo "hello world"
     - stage:
-        identifier: build
-        name: build
+        name: finish
+        identifier: finish
+        description: ""
+        type: CI
         spec:
-          caching:
-            enabled: true
           cloneCodebase: true
-          execution:
-            steps:
-              - step:
-                  type: Run
-                  name: build_image
-                  identifier: build_image
-                  spec:
-                    shell: Sh
-                    command: docker build -f Dockerfile -t demo:test .
-                  description: Builds Docker Image
           platform:
             os: Linux
             arch: Amd64
           runtime:
             type: Cloud
             spec: {}
-        type: CI
-        description: ""
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Run_1
+                  identifier: Run_1
+                  spec:
+                    shell: Sh
+                    command: sleep 10
