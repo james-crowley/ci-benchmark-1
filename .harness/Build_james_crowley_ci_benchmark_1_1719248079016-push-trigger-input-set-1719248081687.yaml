@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_james_crowley_ci_benchmark_1_1719248079016-push-trigger-input-set
+  identifier: Build_james_crowley_ci_benchmark_1_1719248079016pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_james_crowley_ci_benchmark_1_1719248079016
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
