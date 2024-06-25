@@ -27,7 +27,7 @@ pipeline:
                       identifier: build_image
                       spec:
                         shell: Sh
-                        command: docker build -f Dockerfile -t demo:test .
+                        command: docker build -f Dockerfiled -t demo:test .
                       description: Builds Docker Image
               platform:
                 os: Linux
