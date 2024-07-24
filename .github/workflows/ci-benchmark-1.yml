@@ -1,7 +1,6 @@
 name: ci-benchmark-1
 
-on:
-  workflow_dispatch:
+on: push
 
 jobs:
   # test-demo:
